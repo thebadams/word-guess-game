@@ -11,26 +11,26 @@ class Word {
         }
     }
 
-    guessLetter(letter) {
-        let guess = false;
-        for (let letterObject of this.letters) {
-            if (letter === letterObject.char) {
-                guess = true;
-                let index = this.letters.indexOf(letterObject);
-                let lettersCopy = [...this.letters];
-                let firstHalf = lettersCopy.slice(0, index); 
-                let secondHalf = lettersCopy.slice(index+1, lettersCopy.length);
-                this.letters = firstHalf.concat(secondHalf);
-                letterObject.visible = true;
-            }
-        }
-        return guess;
+    toString(){
+       return this.letters.join(" ")
     }
+
+    getSolution(){
+        return this.letters.map((letter)=> letter.getSolution())
+    }
+
+    guessLetter(guessChar) {
+        let correctGuess = false;
+        this.letters.forEach((letter)=>{
+            if (letter.guess(guessChar)) {
+                correctGuess = true;
+            }
+        })
+        return correctGuess;
+    }
+
     guessedCorrectly() {
-        if (this.letters.length === 0) {
-            return true;
-        }
-    return false;
+       return this.letters.every((letter)=>letter.visible);
     }
 }
 
